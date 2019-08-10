@@ -40,3 +40,10 @@ spec = do
 
    it "returns the expected result for a list of multi digit numbers" $
     sumDigits [16,7,12,5] `shouldBe` 22 --  1 + 6 + 7 + 1 + 2 + 5 
+
+  describe "validate" $ do
+   it "returns true if is valid credit card number" $
+    validate 4012888888881881 `shouldBe` True
+
+   it "returns true if is valid credit card number" $
+    validate 4012888888881882 `shouldBe` False
