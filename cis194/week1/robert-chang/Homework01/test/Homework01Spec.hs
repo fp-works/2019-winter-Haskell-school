@@ -47,3 +47,7 @@ spec = do
 
    it "returns true if is valid credit card number" $
     validate 4012888888881882 `shouldBe` False
+
+  describe "hanoi" $ do
+  it "returns correct steps" $
+    hanoi 2 "a" "b" "c" `shouldBe` [("a","c"), ("a","b"), ("c","b")]

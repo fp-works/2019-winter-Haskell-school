@@ -4,6 +4,7 @@ module Homework01
     , doubleEveryOther
     , sumDigits
     , validate
+    , hanoi
     ) where
 
 -- toDigits
@@ -33,3 +34,15 @@ eQZero = (== 0)
 
 validate :: Integer -> Bool
 validate =  eQZero . getLastDigit . sumDigits . doubleEveryOther . toDigits   
+
+-- hanoi
+type Peg = String
+type Move = (Peg, Peg)
+hanoi :: Integer -> Peg -> Peg -> Peg -> [Move]
+hanoi 0 _ _ _ 
+  = []
+hanoi n a b c 
+  = hanoi (n-1) a c b 
+  ++ [(a,b)]
+  ++ hanoi (n-1) c b a
+
