@@ -21,7 +21,7 @@ doubleOrNot a b
   | otherwise = a
 
 doubleEveryOther :: [Integer] -> [Integer]
-doubleEveryOther = mapInd doubleOrNot
+doubleEveryOther = mapInd doubleOrNot . reverse
 
 sumDigits :: [Integer] -> Integer
 sumDigits = sum . concatMap toDigits
