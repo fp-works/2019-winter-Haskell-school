@@ -1,6 +1,4 @@
-# 2019-winter-Haskell-school
-
-2019 winter Haskell school in Sydney Australia 
+# 2019 winter Haskell school in Sydney Australia 
 
 
 
@@ -22,7 +20,7 @@ This course is widely recommended by Haskell learners.
 
 
 
-## homework and after class discussions
+## Homework and after class discussions
 
 
 
@@ -30,7 +28,8 @@ After each week's class, participants need to complete assignments from the cis1
 
 
 You can skip the assignments, but remember:
->If you don't do your homework and expect to be a Haskell programmer in the end of this course just by coming to/reading the lecture, you are kidding yourself. &mdash;Shine Li</cite>
+
+> If you don't do your homework and expect to be a Haskell programmer in the end of this course just by coming to/reading the lecture, you are kidding yourself. &mdash;Shine Li
 
 
 
@@ -41,7 +40,7 @@ You can also raise any questions or issues when you are learning Haskell and rai
 You can submit your assignment to this path `cis194/week1/Yourname`, replace Yourname with your own.
 
 
-if you don't do your homework and expect to be a Haskell programmer in the end of this course just by coming to/reading the lecture, you are kidding yourself.
+*If you don't do your homework and expect to be a Haskell programmer in the end of this course just by coming to/reading the lecture, you are kidding yourself.*
 
 
 ## Other resources
@@ -51,6 +50,3 @@ if you don't do your homework and expect to be a Haskell programmer in the end o
 ## YouTube channel [Instant FP](https://www.youtube.com/channel/UC9Hfs-_0PtqNT9Az-Jf1ptQ)
 
 We will upload Functional programming videos inregually into this Channel. You can subscribe to it. 
-
-
-
