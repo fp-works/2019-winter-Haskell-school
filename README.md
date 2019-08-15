@@ -6,11 +6,11 @@
 
 We are based on [CIS194](https://www.seas.upenn.edu/~cis194/spring13/lectures.html) which is a 12 week course and we will extend it with advanced contents.
 
-Each class has average length of 2 hours. Each week, we will pick a time and place and announce it.
+Each class has average length of 2 hours. Each week, we will pick a time and place, and announce it.
 
 
 
-## Materials that we used for this class
+## Materials that we use for this class
 
 
 
@@ -29,7 +29,7 @@ This course is widely recommended by Haskell learners.
 After each week's class, participants need to complete assignments from the cis194 course and submit to this repo as a [Pull Request](https://github.com/fp-works/2019-winter-Haskell-school/pulls).
 
 
-You can skip the assignments, but remember:
+You shouldn’t skip the assignments, and remember:
 
 > If you don't do your homework and expect to be a Haskell programmer in the end of this course just by coming to/reading the lecture, you are kidding yourself. &mdash;Shine Li
 
