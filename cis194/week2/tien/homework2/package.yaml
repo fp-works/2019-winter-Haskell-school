@@ -1,0 +1,49 @@
+name:                homework2
+version:             0.1.0.0
+github:              "githubuser/homework2"
+license:             BSD3
+author:              "Tien"
+maintainer:          "tienlindev@gmail.com"
+copyright:           "2019 Tien"
+
+extra-source-files:
+- README.md
+- ChangeLog.md
+
+# Metadata used when publishing your package
+# synopsis:            Short description of your package
+# category:            Web
+
+# To avoid duplicated efforts in documentation and dealing with the
+# complications of embedding Haddock markup inside cabal files, it is
+# common to point users to the README.md file.
+description:         Please see the README on GitHub at <https://github.com/githubuser/homework2#readme>
+
+dependencies:
+- base >= 4.7 && < 5
+- hspec
+
+library:
+  source-dirs: src
+
+executables:
+  homework2-exe:
+    main:                Main.hs
+    source-dirs:         app
+    ghc-options:
+    - -threaded
+    - -rtsopts
+    - -with-rtsopts=-N
+    dependencies:
+    - homework2
+
+tests:
+  homework2-test:
+    main:                LogAnalysisSpec.hs
+    source-dirs:         test
+    ghc-options:
+    - -threaded
+    - -rtsopts
+    - -with-rtsopts=-N
+    dependencies:
+    - homework2
