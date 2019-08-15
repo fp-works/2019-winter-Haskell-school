@@ -34,6 +34,8 @@ You can skip the assignments, but remember:
 > If you don't do your homework and expect to be a Haskell programmer in the end of this course just by coming to/reading the lecture, you are kidding yourself. &mdash;Shine Li
 
 
+> Why is Zehua so good even though he jigs classes all the time? Because he does his homework. &mdash;Shine Li
+
 
 You can also raise any questions or issues when you are learning Haskell and raise it to [here](https://github.com/fp-works/2019-winter-Haskell-school/issues).
 
