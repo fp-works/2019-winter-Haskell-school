@@ -1,0 +1,39 @@
+cabal-version: 1.12
+
+-- This file has been generated from package.yaml by hpack version 0.31.2.
+--
+-- see: https://github.com/sol/hpack
+--
+-- hash: 2ea638eba01a1478d177df45c52c11efdd8184b6309d52353b1a3e896109d9e8
+
+name:           Week1
+version:        0.0.0
+build-type:     Simple
+
+library
+  exposed-modules:
+      Homework
+  other-modules:
+      Paths_Week1
+  hs-source-dirs:
+      src
+  ghc-options: -Wall
+  build-depends:
+      base ==4.*
+  default-language: Haskell2010
+
+test-suite spec
+  type: exitcode-stdio-1.0
+  main-is: Spec.hs
+  other-modules:
+      HomeworkSpec
+      Paths_Week1
+  hs-source-dirs:
+      test
+  ghc-options: -Wall
+  build-depends:
+      Week1
+    , base ==4.*
+    , hspec ==2.*
+  default-language: Haskell2010
+  build-tool-depends: hspec-discover:hspec-discover == 2.*
