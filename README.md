@@ -22,7 +22,9 @@ This course is widely recommended by Haskell learners.
 
 ## Homework and after class discussions
 
-
+<p align="center">
+    <img src="homework.jpg" alt="Image" width="200" height="200" />
+</p>
 
 After each week's class, participants need to complete assignments from the cis194 course and submit to this repo as a [Pull Request](https://github.com/fp-works/2019-winter-Haskell-school/pulls).
 
@@ -67,6 +69,11 @@ You can submit your assignment to this path `cis194/week1/Yourname`, replace You
       - `atom-haskell` This is a plugin that installs a list of other plugins to support Haskell development
 
 ### Knowledge points
+
+<p align="center">
+    <img src="shareknowledge.jpeg" alt="Image" width="200" height="200" />
+</p>
+
 - There are valuable take away knowledge hiding in the comments of homework PRs, they are collected under https://github.com/fp-works/2019-winter-Haskell-school/wiki/Best-Practises-Tips for easy discovery.
 
 
