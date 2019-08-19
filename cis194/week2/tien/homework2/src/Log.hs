@@ -2,7 +2,7 @@
 
 module Log where
 
-import Control.Applicative
+import           Control.Applicative ()
 
 data MessageType = Info
                  | Warning
