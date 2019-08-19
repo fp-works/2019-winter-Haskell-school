@@ -50,7 +50,7 @@ You can submit your assignment to this path `cis194/week1/Yourname`, replace You
 
 ## Setup local development environment
 - [install stack](https://docs.haskellstack.org/en/stable/README/)
-- `stack new <project> <template-name>`
+- `stack new <PACKAGE_NAME> <TEMPLATE_NAME>`
 - Then you have the following choices:
   - Use GHCi. This is invoked via `stack ghci` under your project root.
     - Every time you change your code, you can use `:r` to reload your ghci session with latest code. It will show error if your code does not compile.
