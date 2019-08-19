@@ -44,11 +44,11 @@ You can also raise any questions or issues when you are learning Haskell and rai
 You can submit your assignment to this path `cis194/week1/Yourname`, replace Yourname with your own.
 
 
-*If you don't do your homework and expect to be a Haskell programmer in the end of this course just by coming to/reading the lecture, you are kidding yourself.*
+*If you don't do your homework and expect to be a Haskell programmer in the end of this course just by coming to/reading the lecture, you are **KIDDING** yourself.*
 
 
-## Other resources
-### Setup local development environment
+
+## Setup local development environment
 - [install stack](https://docs.haskellstack.org/en/stable/README/)
 - `stack new project name`
 - Then you have the following choices:
@@ -70,13 +70,18 @@ You can submit your assignment to this path `cis194/week1/Yourname`, replace You
     - atom
       - `atom-haskell` This is a plugin that installs a list of other plugins to support Haskell development
 
-### Knowledge points
+
+## Knowledge points
 
 <p align="center">
     <img src="shareknowledge.jpeg" alt="Image" width="200" height="200" />
 </p>
 
 - There are valuable take away knowledge hiding in the comments of homework PRs, they are collected under https://github.com/fp-works/2019-winter-Haskell-school/wiki/Best-Practises-Tips for easy discovery.
+
+## TIL
+
+- Open an issue on the issue tracker and label it `Today I learnt` to share what you have learnt today!
 
 
 ## YouTube channel [Instant FP](https://www.youtube.com/channel/UC9Hfs-_0PtqNT9Az-Jf1ptQ)
