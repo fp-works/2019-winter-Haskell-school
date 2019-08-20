@@ -1,15 +1,16 @@
 module HomeworkSpec where
 import Homework
 import Test.Hspec
-import Control.Exception (evaluate)
 
 spec :: Spec
 spec = do
   describe "toDigits" $ do
    it "returns an empty list for a negative integer" $ do
       toDigits (-1) `shouldBe` []
+
    it "returns an empty list for 0" $ do
       toDigits 0 `shouldBe` []
+
    it "returns al ist for an integer" $ do
       toDigits 2341 `shouldBe` [2,3,4,1]
 
