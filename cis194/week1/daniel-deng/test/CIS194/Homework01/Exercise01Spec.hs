@@ -3,7 +3,6 @@ module CIS194.Homework01.Exercise01Spec where
 import CIS194.Homework01.Exercise01
 
 import Test.Tasty.Hspec
-import Control.Exception (evaluate)
 
 spec_toDigits :: Spec
 spec_toDigits = do

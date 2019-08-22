@@ -1,7 +1,5 @@
 module CIS194.Homework02.Log where
 
-import Control.Applicative
-
 type TimeStamp   = Int
 type Severity    = Int
 

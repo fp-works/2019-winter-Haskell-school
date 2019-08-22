@@ -5,7 +5,6 @@ import CIS194.Homework02.Exercise03
 import CIS194.Homework02.Exercise04
 
 import Test.Tasty.Hspec
-import Control.Exception (evaluate)
 
 spec_inOrder :: Spec
 spec_inOrder = do

@@ -1,11 +1,9 @@
 module CIS194.Homework02.Exercise05Spec where
 
-import CIS194.Homework02.Log
 import CIS194.Homework02.Exercise01 (parseMessage)
 import CIS194.Homework02.Exercise05
 
 import Test.Tasty.Hspec
-import Control.Exception (evaluate)
 
 spec_whatWentWrong :: Spec
 spec_whatWentWrong =

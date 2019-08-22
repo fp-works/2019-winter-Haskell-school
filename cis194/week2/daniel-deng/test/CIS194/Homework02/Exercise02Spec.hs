@@ -5,7 +5,6 @@ import CIS194.Homework02.Exercise02
 import CIS194.Homework02.Exercise04
 
 import Test.Tasty.Hspec
-import Control.Exception (evaluate)
 
 spec_insert :: Spec
 spec_insert = do
@@ -13,11 +12,11 @@ spec_insert = do
   describe "with a LogMessage of Unknown" $
 
     it "returns the same tree" $ do
-      let log  = Unknown "Some message"
-      let info = LogMessage Info 1 "Some message"
-      let tree = Node Leaf info Leaf
-      insert log Leaf `shouldBe` Leaf
-      insert log tree `shouldBe` tree
+      let unknown = Unknown "Some message"
+      let info    = LogMessage Info 1 "Some message"
+      let tree    = Node Leaf info Leaf
+      insert unknown Leaf `shouldBe` Leaf
+      insert unknown tree `shouldBe` tree
 
   describe "with a Leaf node" $
 

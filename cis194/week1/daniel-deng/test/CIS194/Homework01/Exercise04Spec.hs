@@ -3,7 +3,6 @@ module CIS194.Homework01.Exercise04Spec where
 import CIS194.Homework01.Exercise04
 
 import Test.Tasty.Hspec
-import Control.Exception (evaluate)
 
 spec_validate :: Spec
 spec_validate = do

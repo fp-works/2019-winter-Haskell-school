@@ -3,7 +3,6 @@ module CIS194.Homework01.Exercise02Spec where
 import CIS194.Homework01.Exercise02
 
 import Test.Tasty.Hspec
-import Control.Exception (evaluate)
 
 spec_doubleEveryOther :: Spec
 spec_doubleEveryOther = do

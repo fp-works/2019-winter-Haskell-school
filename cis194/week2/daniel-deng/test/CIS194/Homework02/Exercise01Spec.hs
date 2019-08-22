@@ -4,7 +4,6 @@ import CIS194.Homework02.Log
 import CIS194.Homework02.Exercise01
 
 import Test.Tasty.Hspec
-import Control.Exception (evaluate)
 
 spec_parseMessage :: Spec
 spec_parseMessage = do

@@ -17,4 +17,5 @@ hanoi n start destination temp
   | otherwise = hanoi n' start temp destination
                 ++ [(start, destination)]
                 ++ hanoi n' temp destination start
-              where n' = n - 1
+              where
+                n' = n - 1

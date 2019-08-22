@@ -3,7 +3,6 @@ module CIS194.Homework01.Exercise05Spec where
 import CIS194.Homework01.Exercise05
 
 import Test.Tasty.Hspec
-import Control.Exception (evaluate)
 
 spec_hanoi :: Spec
 spec_hanoi = do
