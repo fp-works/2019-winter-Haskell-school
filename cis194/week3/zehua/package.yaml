@@ -1,0 +1,15 @@
+name: Week3
+version: 0.0.0
+
+ghc-options: -Wall
+
+dependencies:
+ - base == 4.*
+
+library:
+  source-dirs: src
+
+tests:
+  spec:
+    defaults: hspec/hspec@master
+    dependencies: Week3
