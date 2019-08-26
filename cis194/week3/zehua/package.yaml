@@ -5,6 +5,8 @@ ghc-options: -Wall
 
 dependencies:
  - base == 4.*
+ - ilist
+ - MissingH
 
 library:
   source-dirs: src
