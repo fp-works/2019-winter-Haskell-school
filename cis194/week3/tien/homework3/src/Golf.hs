@@ -12,11 +12,8 @@ skips arr =  (`everyNth` pairs) <$> indexArr
     pairs = zip arr indexArr
 
 -- Exercise 2 --
--- findMaxima (x:y:z:xs)
---   | y > x && y > z = [y]
---   | otherwise = findMaxima (y : z : xs)
--- localMaxima :: [Integer] -> [Integer]
--- localMaxima [] = []
--- localMaxima [_] = []
--- localMaxima [_, _] = []
--- localMaxima arr = foldl (\acc x-> )
+localMaxima :: [Integer] -> [Integer]
+localMaxima (x:y:z:xs)
+  | y > x && y > z = y : localMaxima (y : z : xs)
+  | otherwise = localMaxima (y : z : xs)
+localMaxima _ = []
