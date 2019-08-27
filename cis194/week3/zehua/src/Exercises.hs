@@ -1,12 +1,14 @@
 module Exercises where
 
-import           Control.Applicative (liftA2)
+-- import           Control.Applicative (liftA2)
 import           Control.Monad (ap)
 import           Data.Bool (bool)
 import           Data.Char (isSpace)
-import           Data.List (sort, transpose)
-import           Data.List.Index (ifilter{-, imap-})
+import           Data.List ({-group, -}sort, transpose)
+import           Data.List.HT (sieve)
+-- import           Data.List.Index (ifilter{-, imap-})
 -- import           Data.Maybe (catMaybes)
+-- import           Data.List.Utils (countElem) -- from MissingH @ stackage
 import           Data.Tuple.Utils (snd3) -- from MissingH @ stackage
 
 -- ex1
@@ -78,15 +80,27 @@ everY n xs = case drop n xs of
 -- skips = liftA2 everY (map fst . zip [1..]) pure
 -- 65 + 37 = 102 chars
 -- skips l = liftA2 everY [0..(length l)-1] [l]
--- 65 + 35 = 100 chars
--- skips l = (flip everY) l <$> [1..length l]
+-- 65 + 33 = 100 chars
+-- skips l = flip everY l <$> [1..length l]
 -- 65 + 40 = 105 chars
 -- skips = fmap . (flip sieve) <*> map fst . zip [1..]
+
+-- using sieve from Data.List.HT
+{-
+every = liftA2 (.) sieve (drop . (-1 +))
+every = (.) <$> sieve <*> drop . (-1 +))
+every n l = sieve n (drop (n-1) l)
+-}
+-- 55 chars point free every
+-- skips l = flip (liftA2 (.) sieve (drop . (-1 +))) l <$> [1..length l]
+-- 46 chars
+-- skips l = (\n -> sieve n . drop (n-1) $ l) <$> [1..length l]
+skips l = (\n -> sieve n (drop (n-1) l)) <$> [1..length l]
 
 -- using ifilter from Data.List.Index to implement every
 -- every n = ifilter (\i _ -> (i+1) `mod` n == 0)
 -- 60 chars
-skips l = liftA2 (\n -> ifilter (\i _ -> mod (i+1) n == 0)) [1..length l] [l]
+-- skips l = liftA2 (\n -> ifilter (\i _ -> mod (i+1) n == 0)) [1..length l] [l]
 -- 73 chars point free of l
 -- skips = liftA2 (liftA2 (\n -> ifilter (\i _ -> mod (i+1) n == 0)))  (map fst . zip [1..]) pure
 -- 70 chars point free in ifilter
@@ -181,3 +195,31 @@ histogram =
     --    (map . ((bool ' ' '*') .) . (==))
     --    [0..9]
     . pure
+
+-- 137 chars using sort and group
+-- (++ "==========\n0123456789\n") . unlines . map (map (bool '*' ' ' . null)) . reverse . drop 1 . takeWhile (any null) . iterate (map (drop 1)) . group . sort . (++ [0..9])
+{-
+histogram =
+    (++ "==========\n0123456789\n")
+  . unlines
+  . map (map (bool '*' ' ' . null)) -- draw it
+  . reverse
+  . drop 1     -- revert the effect of step 1 (remove one occurrence for each)
+  . takeWhile (any null)
+  . iterate (map (drop 1)) -- gradually reduce the size by 1 in each sublist
+  . group      -- [[0], [1,1,1], [2], ... ]
+  . sort
+  . (++ [0..9]) -- add 1 occurrence for each number so that we get at least one entry for each
+-}
+-- 147 chars using countElem
+{-
+histogram =
+    (++ "==========\n0123456789\n")
+  . unlines
+  . map (map (bool '*' ' ' . (<1))) -- draw it
+  . reverse
+  . takeWhile (any (>0)) -- stop when all 0 or lower
+  . iterate (map (-1 +)) -- gradually reduce the size
+  -- (\l -> map ((flip countElem) l) [0..9])
+  . flip (map . flip countElem) [0..9] -- count occurrences of each number
+-}
