@@ -69,6 +69,8 @@ You can submit your assignment to this path `cis194/week1/Yourname`, replace You
       - TBD
     - atom
       - `atom-haskell` This is a plugin that installs a list of other plugins to support Haskell development
+  - Running tests
+    - `stack test`
 
 
 ## Knowledge points
