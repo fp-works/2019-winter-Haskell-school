@@ -19,3 +19,8 @@ main =
         localMaxima [2, 9, 5, 6, 1] `shouldBe` [9, 6]
         localMaxima [2, 3, 4, 1, 5] `shouldBe` [4]
         localMaxima [1, 2, 3, 4, 5] `shouldBe` []
+-- Exercise 3 --
+      it "should return correct histogram" $ do
+        histogram [3, 5] `shouldBe` "   * *    \n==========\n0123456789\n"
+        histogram [1, 1, 1, 5] `shouldBe`
+          " *        \n *        \n *   *    \n==========\n0123456789\n"

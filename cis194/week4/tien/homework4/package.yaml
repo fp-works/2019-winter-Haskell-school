@@ -1,6 +1,6 @@
-name:                homework3
+name:                homework4
 version:             0.1.0.0
-github:              "tienwei/homework3"
+github:              "tienwei/homework4"
 license:             BSD3
 author:              "Tien"
 maintainer:          "tienlindev@gmail.com"
@@ -17,18 +17,17 @@ extra-source-files:
 # To avoid duplicated efforts in documentation and dealing with the
 # complications of embedding Haddock markup inside cabal files, it is
 # common to point users to the README.md file.
-description:         Please see the README on GitHub at <https://github.com/tienwei/homework3#readme>
+description:         Please see the README on GitHub at <https://github.com/tienwei/homework4#readme>
 
 dependencies:
 - base >= 4.7 && < 5
 - hspec
-- array
 
 library:
   source-dirs: src
 
 executables:
-  homework3-exe:
+  homework4-exe:
     main:                Main.hs
     source-dirs:         app
     ghc-options:
@@ -36,15 +35,15 @@ executables:
     - -rtsopts
     - -with-rtsopts=-N
     dependencies:
-    - homework3
+    - homework4
 
 tests:
-  homework3-test:
-    main:                GolfSpec.hs
+  homework4-test:
+    main:                Homework4Spec.hs
     source-dirs:         test
     ghc-options:
     - -threaded
     - -rtsopts
     - -with-rtsopts=-N
     dependencies:
-    - homework3
+    - homework4
