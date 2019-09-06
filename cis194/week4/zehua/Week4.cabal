@@ -4,7 +4,7 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: 95d71cba14fad572405749c745b84601240ae01e26d645984c03c585844300fa
+-- hash: 273d451eab0bd39646d5e6c55e384b64b6a569722883b900fb2b91d57fa91a26
 
 name:           Week4
 version:        0.0.0
@@ -20,6 +20,7 @@ library
   ghc-options: -Wall
   build-depends:
       base ==4.*
+    , primes
   default-language: Haskell2010
 
 test-suite spec
@@ -35,5 +36,6 @@ test-suite spec
       Week4
     , base ==4.*
     , hspec ==2.*
+    , primes
   default-language: Haskell2010
   build-tool-depends: hspec-discover:hspec-discover == 2.*

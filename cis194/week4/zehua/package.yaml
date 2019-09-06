@@ -5,6 +5,7 @@ ghc-options: -Wall
 
 dependencies:
  - base == 4.*
+ - primes
 
 library:
   source-dirs: src
