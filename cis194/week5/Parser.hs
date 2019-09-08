@@ -5,9 +5,8 @@ module Parser (parseExp) where
 import Control.Applicative hiding (Const)
 import Control.Arrow
 import Data.Char
--- import Data.Monoid
+import Data.Monoid
 import Data.List (foldl')
-import Prelude hiding (toInteger)
 
 -- Building block of a computation with some state of type @s@
 -- threaded through it, possibly resulting in a value of type @r@
@@ -42,7 +41,7 @@ type Parser a = State String a
 digit :: Parser Integer
 digit = State $ parseDigit
     where parseDigit [] = Nothing
-          parseDigit (c:cs)
+          parseDigit s@(c:cs)
               | isDigit c = Just (fromIntegral $ digitToInt c, cs)
               | otherwise = Nothing
 
@@ -55,7 +54,7 @@ num = maybe id (const negate) <$> optional (char '-') <*> (toInteger <$> some di
 space :: Parser ()
 space = State $ parseSpace
     where parseSpace [] = Nothing
-          parseSpace (c:cs)
+          parseSpace s@(c:cs)
               | isSpace c = Just ((), cs)
               | otherwise = Nothing
 
@@ -85,7 +84,7 @@ eof = State parseEof
 parseExpr :: Parser Expr
 parseExpr = eatSpace *>
             ((buildOp <$> nonOp <*> (eatSpace *> op) <*> parseExpr) <|> nonOp)
-    where buildOp x op' y = x `op'` y
+    where buildOp x op y = x `op` y
           nonOp = char '(' *> parseExpr <* char ')' <|> Const <$> num
 
 -- Run a parser over a 'String' returning the parsed value and the

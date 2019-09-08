@@ -55,5 +55,4 @@ execute (BVal s1 : BVal s2 : ss) (Or : xs)  = execute (s':ss) xs
 execute (_:_:_) (Or:_)                      = errType "Or"
 execute _ (Or:_)                            = errUnderflow "Or"
 
-test :: Either String StackVal
 test = stackVM [PushI 3, PushI 5, Add]

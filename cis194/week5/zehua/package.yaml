@@ -5,6 +5,7 @@ ghc-options: -Wall
 
 dependencies:
  - base == 4.*
+ - containers
 
 library:
   source-dirs: src
