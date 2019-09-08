@@ -4,12 +4,13 @@ module Exercises where
 import           Control.Monad (ap)
 import           Data.Bool (bool)
 import           Data.Char (isSpace)
-import           Data.List ({-group, -}sort, transpose)
+import           Data.List ({-group, -}sort, tails, transpose)
 import           Data.List.HT (sieve)
--- import           Data.List.Index (ifilter{-, imap-})
+import           Data.List.Index ({-ifilter, -}imap)
 -- import           Data.Maybe (catMaybes)
 -- import           Data.List.Utils (countElem) -- from MissingH @ stackage
 import           Data.Tuple.Utils (snd3) -- from MissingH @ stackage
+import           Safe (initSafe) -- from safe @ stackage
 
 -- ex1
 
@@ -95,7 +96,9 @@ every n l = sieve n (drop (n-1) l)
 -- skips l = flip (liftA2 (.) sieve (drop . (-1 +))) l <$> [1..length l]
 -- 46 chars
 -- skips l = (\n -> sieve n . drop (n-1) $ l) <$> [1..length l]
-skips l = (\n -> sieve n (drop (n-1) l)) <$> [1..length l]
+-- skips l = (\n -> sieve n (drop (n-1) l)) <$> [1..length l]
+-- 37 chars combine imap with sieve and tails
+skips = imap (sieve . (+1)) . initSafe . tails
 
 -- using ifilter from Data.List.Index to implement every
 -- every n = ifilter (\i _ -> (i+1) `mod` n == 0)
