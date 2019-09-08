@@ -6,6 +6,8 @@ import Text.Megaparsec hiding (parse)
 import Text.Megaparsec.Char
 import qualified Text.Megaparsec.Char.Lexer as L
 import Data.Void
+-- need lens
+import Control.Lens ((<&>))
 
 type Parser = Parsec Void String
 
@@ -13,21 +15,15 @@ messageTypeParser :: Parser MessageType
 messageTypeParser = do
   charType <- oneOf "IEW"
   case charType of
-       'I' -> return Info
-       'W' -> return Warning
-       'E' -> do 
-          space1
-          errorCode <- L.decimal
-          return (Error errorCode)
+       'I' -> pure Info
+       'W' -> pure Warning
+       'E' -> space1 *> L.decimal <&> Error
 
 messageParser :: Parser LogMessage
-messageParser = do
-  messageType <- messageTypeParser
-  space1
-  timeStamp <- L.decimal
-  space
-  message <- many asciiChar
-  return $ LogMessage messageType timeStamp message
+messageParser = LogMessage
+            <$> (messageTypeParser <* space1)
+            <*> (L.decimal <* space)
+            <*> (many asciiChar)
 
 parseMessage :: String -> LogMessage
 parseMessage s = case (runParser messageParser "" s) of
