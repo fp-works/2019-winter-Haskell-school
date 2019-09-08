@@ -25,9 +25,9 @@ instance HasVars (M.Map String Integer -> Maybe Integer) where
   var = M.lookup
 
 instance Expr (M.Map String Integer -> Maybe Integer) where
-  lit a = (\_ -> Just a)
-  add a b = (\m -> fmap (+) (a m) <*> (b m))
-  mul a b = (\m -> fmap (*) (a m) <*> (b m))
+  lit = const . Just
+  add a b = (\m -> (+) <$> (a m) <*> (b m))
+  add a b = (\m -> (*) <$> (a m) <*> (b m))
 
 withVars :: [(String, Integer)]
   -> (M.Map String Integer -> Maybe Integer)
