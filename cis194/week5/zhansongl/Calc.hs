@@ -4,7 +4,7 @@ module Calc where
 
 import ExprT
 import Parser
-import Control.Applicative (liftA, liftA2)
+import Control.Applicative (liftA)
 import qualified StackVM as S
 import qualified Data.Map as M
 
@@ -85,11 +85,11 @@ instance HasVars (M.Map String Integer -> Maybe Integer) where
 
 instance Expr (M.Map String Integer -> Maybe Integer) where
   lit = const . Just
-  add e1 e2 m = liftA2 (+) (e1 m) (e2 m)
-  mul e1 e2 m = liftA2 (*) (e1 m) (e2 m)
+  add e1 e2 m = (+) <$> (e1 m) <*> (e2 m)
+  mul e1 e2 m = (*) <$> (e1 m) <*> (e2 m)
 
 withVars :: [(String, Integer)]
          -> (M.Map String Integer -> Maybe Integer)
          -> Maybe Integer
-withVars vs exp = exp $ M.fromList vs
+withVars vs exp = exp . M.fromList $ vs
 
