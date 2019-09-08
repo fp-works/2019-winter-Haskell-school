@@ -50,9 +50,9 @@ localMaxima = map (\x -> atDef 0 x 1) . filter (\[a, b, c] -> a <= b && b >= c) 
 
 histogram :: [Int] -> String
 -- 182 chars
-histogram xs = (++ "==========\n0123456789\n") .
-               unlines $
-               reverse (map (\k -> map (\n -> bool ' ' '*' (maybe 0 id (p!?n) >= k)) l) [1..(maximum p)])
+histogram xs = (++ "==========\n0123456789\n")
+             . unlines
+             $ reverse (map (\k -> map (\n -> bool ' ' '*' (maybe 0 id (p!?n) >= k)) l) [1..(maximum p)])
   where p = foldr (adjust (+1)) (foldr (flip insert 0) empty l) xs
         l = [0..9]
 
