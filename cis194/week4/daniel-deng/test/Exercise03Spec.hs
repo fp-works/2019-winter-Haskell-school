@@ -30,3 +30,15 @@ spec_map' = do
 
   it "returns the expected result for a list of `String`s" $
     map' ("Hello "++) ["Alice", "Bob", "World"] `shouldBe` ["Hello Alice", "Hello Bob", "Hello World"]
+
+spec_myFoldL :: Spec
+spec_myFoldL = do
+
+  it "returns the init value for an empty list" $
+    myFoldl (+) 100 ([] :: [Int]) `shouldBe` 100
+
+  it "returns the expected result for a list of `Int`s" $
+    myFoldl (+) 0 ([1..10] :: [Int]) `shouldBe` 55
+
+  it "returns the expected result for a list of `String`s" $
+    myFoldl (\x y -> x ++ " " ++ y) "Hello" ["Haskell", "Curry"] `shouldBe` "Hello Haskell Curry"
