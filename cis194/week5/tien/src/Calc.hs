@@ -6,7 +6,7 @@ module Calc where
 
 import qualified ExprT   as ET
 import           Parser
-import qualified StackVM as SVM
+import           StackVM as SVM
 
 -- Exercise 1 --
 eval :: ET.ExprT -> Integer
@@ -25,9 +25,12 @@ class Expr a where
   mul :: a -> a -> a
 
 instance Expr ET.ExprT where
-  lit a = ET.Lit a
-  add a b = ET.Add a b
-  mul a b = ET.Mul a b
+  lit = ET.Lit
+  add = ET.Add
+  mul = ET.Mul
+
+reify :: ET.ExprT -> ET.ExprT
+reify = id
 
 -- Exercise 4 --
 newtype MinMax =
@@ -50,13 +53,13 @@ instance Expr Bool where
 
 instance Expr MinMax where
   lit a = MinMax a
-  add (MinMax a) (MinMax b) = MinMax $ max a b
-  mul (MinMax a) (MinMax b) = MinMax $ min a b
+  add (MinMax a) (MinMax b) = MinMax . max a $ b
+  mul (MinMax a) (MinMax b) = MinMax . min a $ b
 
 instance Expr Mod7 where
   lit a = Mod7 $ mod a 7
-  add (Mod7 a) (Mod7 b) = Mod7 $ lit (a + b)
-  mul (Mod7 a) (Mod7 b) = Mod7 $ lit (a * b)
+  add (Mod7 a) (Mod7 b) = Mod7 . lit $ (a + b)
+  mul (Mod7 a) (Mod7 b) = Mod7 . lit $ (a * b)
 
 testExp :: Expr a => Maybe a
 testExp = parseExp lit add mul "(3 * -4) + 5"

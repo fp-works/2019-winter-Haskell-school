@@ -2,7 +2,7 @@ import           Test.Hspec
 
 import           Calc
 import qualified ExprT      as ET
-import qualified StackVM    as SVM
+import           StackVM    as SVM
 
 main :: IO ()
 main =
@@ -17,8 +17,9 @@ main =
         evalStr "(2+3)*4" `shouldBe` Just 20
         evalStr "2+3*" `shouldBe` Nothing
       -- -- Exercise 3 --
-      -- it "should have the same expression when using Expr typeclass" $ do
-      --   mul (add (lit 2) (lit 3)) (lit 4) :: ET.ExprT `shouldReturn` (ET.Mul (ET.Add (ET.Lit 2) (ET.Lit 3)) (ET.Lit 4))
+      it "should have the same expression when using Expr typeclass" $ do
+        reify (mul (add (lit 2) (lit 3)) (lit 4)) `shouldBe`
+          (ET.Mul (ET.Add (ET.Lit 2) (ET.Lit 3)) (ET.Lit 4))
       -- Exercise 4 --
       it "should do specific calculations based on the types" $ do
         testInteger `shouldBe` Just (-7)
@@ -27,4 +28,5 @@ main =
         testSat `shouldBe` (Just $ Mod7 14)
       -- Exercise 5 --
       it "should compile the given arithmetic string to Program" $ do
-        (show . compile  $ "(2+3)*4") `shouldBe` "Just [PushI 2,PushI 3,Add,PushI 4,Mul]"
+        (show . compile $ "(2+3)*4") `shouldBe`
+          "Just [PushI 2,PushI 3,Add,PushI 4,Mul]"
