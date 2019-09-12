@@ -83,7 +83,7 @@ You can submit your assignment to this path `cis194/week1/Yourname`, replace You
 
 ## TIL
 
-- Open an issue on the issue tracker and label it `Today I learnt` to share what you have learnt today!
+- Edit https://github.com/fp-works/2019-winter-Haskell-school/wiki/TIL to share what you have learnt today!
 
 
 ## YouTube channel [Instant FP](https://www.youtube.com/channel/UC9Hfs-_0PtqNT9Az-Jf1ptQ)
