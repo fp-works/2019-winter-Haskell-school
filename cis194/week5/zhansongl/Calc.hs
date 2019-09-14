@@ -1,3 +1,4 @@
+{-# OPTIONS_GHC -Wall #-}
 {-# LANGUAGE TypeSynonymInstances #-}
 {-# LANGUAGE FlexibleInstances #-}
 module Calc where
@@ -91,5 +92,5 @@ instance Expr (M.Map String Integer -> Maybe Integer) where
 withVars :: [(String, Integer)]
          -> (M.Map String Integer -> Maybe Integer)
          -> Maybe Integer
-withVars vs exp = exp . M.fromList $ vs
+withVars vs expr = expr . M.fromList $ vs
 

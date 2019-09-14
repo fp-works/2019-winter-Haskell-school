@@ -1,3 +1,5 @@
+{-# OPTIONS_GHC -Wall #-}
+
 module Hanoi where
 
 type Peg = String
@@ -63,5 +65,6 @@ hanoi4 :: Integer -> Peg -> Peg -> Peg -> Peg -> [Move]
 hanoi4 0 _ _ _ _ = []
 hanoi4 n a b c d = (hanoi4 p' a c b d) ++ (hanoi (n - p') a b d) ++ (hanoi4 p' c b a d)
   where p' = p * (p - 1) `div` 2
-        p = floor ((sqrt (fromIntegral (1 + 8 * n)) - 1) / 2)
+        p = floor (t / 2)
+        t = (sqrt (fromIntegral (1 + 8 * n)) - 1):: Double
 

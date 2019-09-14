@@ -1,3 +1,5 @@
+{-# OPTIONS_GHC -Wall #-}
+
 module CreditCards where
 
 toDigitsRev :: Integer -> [Integer]
@@ -5,7 +7,7 @@ toDigitsRev n
   | n >= 0 = digit n
   | otherwise = []
   where digit 0 = []
-        digit n = n `rem` 10 : digit (n `div` 10)
+        digit n' = n' `rem` 10 : digit (n' `div` 10)
 
 toDigits :: Integer -> [Integer]
 toDigits = reverse . toDigitsRev

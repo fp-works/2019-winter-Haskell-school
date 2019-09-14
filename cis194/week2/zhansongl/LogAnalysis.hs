@@ -1,4 +1,8 @@
+{-# OPTIONS_GHC -Wall #-}
+
 module LogAnalysis where
+
+import Prelude hiding(log)
 
 import Log
 
@@ -18,6 +22,7 @@ messageTypeParser = do
        'I' -> pure Info
        'W' -> pure Warning
        'E' -> space1 *> L.decimal <&> Error
+       _   -> undefined
 
 messageParser :: Parser LogMessage
 messageParser = LogMessage
@@ -42,6 +47,7 @@ insert log@(LogMessage _ t _) tree =
          if t < t'
          then (Node (insert log left) log' right)
          else (Node left log' (insert log right))
+       _ -> undefined
 
 build :: [LogMessage] -> MessageTree
 build = foldr insert Leaf
@@ -53,7 +59,8 @@ inOrder (Node left log right) = (inOrder left) ++ (log : (inOrder right))
 whatWentWrong :: [LogMessage] -> [String]
 whatWentWrong logs = map getMessage $ filter isRelevant sortedLogs
   where sortedLogs = inOrder (build logs)
-        isRelevant log@(LogMessage (Error ec) _ _) = ec >= 50
+        isRelevant (LogMessage (Error ec) _ _) = ec >= 50
         isRelevant _ = False
         getMessage (LogMessage _ _ s) = s
+        getMessage (Unknown s) = s
 

@@ -1,3 +1,5 @@
+{-# OPTIONS_GHC -Wall #-}
+
 module Wholemeal where
 
 import Data.Bool (bool)
@@ -32,7 +34,7 @@ getHeight (Node h _ _ _) = h
 
 insert :: a -> Tree a -> Tree a
 insert x Leaf = Node 0 Leaf x Leaf
-insert x (Node h left y right)
+insert x (Node _ left y right)
   | getHeight left < getHeight right =
       let h' = 1 + max (getHeight left') (getHeight right)
           left' = insert x left
