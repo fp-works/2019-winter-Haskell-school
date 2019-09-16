@@ -60,35 +60,38 @@ ruler = interleaveStreams (streamRepeat 0) (streamMap (+1) ruler)
 x :: Stream Integer
 x = Cons 0 $ Cons 1 $ streamRepeat 0
 
-instance Num (Stream Integer) where
-  fromInteger n                 = Cons n (streamRepeat 0)
+streamConstNum :: Num a => a -> Stream a
+streamConstNum n = Cons n (streamRepeat 0)
+
+instance (Num a) => Num (Stream a) where
+  fromInteger                   = streamConstNum . fromInteger
   negate (Cons n xs)            = Cons (-n) xs
   (Cons a0 a') + (Cons b0 b')   = Cons (a0 + b0) $ a' + b'
-  (Cons a0 a') * b@(Cons b0 b') = Cons (a0 * b0) $ (fromInteger a0) * b' + a' * b
+  (Cons a0 a') * b@(Cons b0 b') = Cons (a0 * b0) $ (streamConstNum a0) * b' + a' * b
 
 --  (a0/b0) + x((1/b0)(A' − Q*B')).
--- divStream :: Integral a => Stream a -> Stream a -> Stream a
-divStream :: Stream Integer -> Stream Integer -> Stream Integer
+--divStream :: Stream Integer -> Stream Integer -> Stream Integer
+divStream :: Integral a => Stream a -> Stream a -> Stream a
 divStream (Cons a0 a') (Cons b0 b') = q
     where
       q = Cons (div a0 b0) $
-          (divStream (fromInteger 1) (fromInteger b0)) * (a' - q * b')
+          (divStream (fromInteger 1) (streamConstNum b0)) * (a' - q * b')
 
 fibs3 :: [Integer]
 fibs3 = streamToList (divStream x ((fromInteger 1) - x - x * x))
 
 {-
-instance Enum (Stream Integer) where
+instance (Enum a) => Enum (Stream a) where
 
-instance Ord (Stream Integer) where
+instance (Ord a) => Ord (Stream a) where
 
-instance Real (Stream Integer) where
+instance (Real a) => Real (Stream a) where
 
-instance Integral (Stream Integer) where
+instance (Integral a) => Integral (Stream a) where
   div (Cons a0 a') (Cons b0 b') = q
     where
       q = Cons (div a0 b0) $
-          (div (fromInteger 1) (fromInteger b0)) * (a' - q * b')
+          (div (fromInteger 1) (streamConstNum b0)) * (a' - q * b')
 
 fibs3 = streamToList (div x ((fromInteger 1) - x - x * x))
 -}
