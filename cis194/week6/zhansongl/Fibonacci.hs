@@ -4,6 +4,8 @@
 
 module Fibonacci where
 
+import Control.Applicative ((<*>))
+
 fib :: Integer -> Integer
 fib 0 = 0
 fib 1 = 1
@@ -14,7 +16,7 @@ fibs1 = map fib [0..]
 
 fibs2 :: [Integer]
 fibs2 = next 0 1
-  where next a b = a : next b (a+b)
+  where next n = (n:) . (<*>) next (n+)
 
 data Stream a = Cons a (Stream a)
 
@@ -25,13 +27,13 @@ instance Show a => Show (Stream a) where
   show = show . take 20 . streamToList
 
 streamRepeat :: a -> Stream a
-streamRepeat a = Cons a . streamRepeat $ a
+streamRepeat = Cons <*> streamRepeat
 
 streamMap :: (a -> b) -> Stream a -> Stream b
 streamMap f (Cons h t) = Cons (f h) (streamMap f t)
 
 streamFromSeed :: (a -> a) -> a -> Stream a
-streamFromSeed f s = Cons s (streamFromSeed f (f s))
+streamFromSeed f = Cons <*> (streamFromSeed f . f)
 
 nats :: Stream Integer
 nats = streamFromSeed (+1) 0
