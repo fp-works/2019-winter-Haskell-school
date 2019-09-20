@@ -33,7 +33,7 @@ streamMap :: (a -> b) -> Stream a -> Stream b
 streamMap f (Cons h t) = Cons (f h) (streamMap f t)
 
 streamFromSeed :: (a -> a) -> a -> Stream a
-streamFromSeed f = Cons <*> (streamFromSeed f . f)
+streamFromSeed f = Cons <*> streamFromSeed f . f
 
 nats :: Stream Integer
 nats = streamFromSeed (+1) 0
