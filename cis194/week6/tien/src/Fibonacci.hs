@@ -39,4 +39,10 @@ streamFromSeed f x = Con x . streamFromSeed f . f $ x
 
 -- exercise 5 --
 nats :: Stream Integer
-nats = streamFromSeed (+1) 0
+nats = streamFromSeed (+ 1) 0
+
+interleaveStreams :: Stream a -> Stream a -> Stream a
+interleaveStreams (Con x xs) ys = Con x . interleaveStreams ys $ xs
+
+ruler :: Stream Integer
+ruler = interleaveStreams (streamRepeat 0) . streamMap (+ 1) $ ruler
