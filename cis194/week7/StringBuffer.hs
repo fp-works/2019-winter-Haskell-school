@@ -1,19 +1,22 @@
 {-# LANGUAGE FlexibleInstances, TypeSynonymInstances #-}
 module StringBuffer where
 
-import Data.Monoid
+import Data.Monoid ()
 
 import Buffer
 
-instance Buffer String where
-  toString     = id
-  fromString   = id
-  line n b     = safeIndex n (lines b)
-  replaceLine n l b = unlines . uncurry replaceLine' . splitAt n . lines $ b
+-- to avoid orphan instance warning
+newtype BufferString = BufferString { getString :: String }
+
+instance Buffer BufferString where
+  toString     = getString . id
+  fromString   = id . BufferString
+  line n       = safeIndex n . lines . toString
+  replaceLine n l = fromString . unlines . uncurry replaceLine' . splitAt n . lines . toString
       where replaceLine' pre [] = pre
             replaceLine' pre (_:ls) = pre ++ l:ls
-  numLines     = length . lines
-  value        = length . words
+  numLines     = length . lines . toString
+  value        = length . words . toString
 
 safeIndex :: Int -> [a] -> Maybe a
 safeIndex n _ | n < 0 = Nothing
