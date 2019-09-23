@@ -32,32 +32,32 @@ indexJ _ Empty = Nothing
 indexJ i (Single _ a)
   | i == 0 = Just a
   | otherwise = Nothing
-indexJ i (Append _ l1 l2) = case compare i (getSize s1) of
+indexJ i (Append _ l1 l2) = case compare i s1 of
                               LT -> indexJ i l1
-                              _  -> indexJ (i - getSize s1) l2
-  where s1 = size l1
+                              _  -> indexJ (i - s1) l2
+  where s1 = getSize . size $ l1
 
 dropJ :: (Sized b, Monoid b) => Int -> JoinList b a -> JoinList b a
 dropJ _ Empty = Empty
 dropJ n jl@(Single _ _)
   | n <= 0 = jl
   | otherwise = Empty
-dropJ n (Append _ jl1 jl2) = case compare n (getSize s1) of
+dropJ n (Append _ jl1 jl2) = case compare n s1 of
                                   LT -> (dropJ n jl1) +++ jl2
                                   EQ -> jl2
-                                  GT -> dropJ (n - getSize s1) jl2
-  where s1 = size jl1
+                                  GT -> dropJ (n - s1) jl2
+  where s1 = getSize . size $ jl1
 
 takeJ :: (Sized b, Monoid b) => Int -> JoinList b a -> JoinList b a
 takeJ _ Empty = Empty
 takeJ n jl@(Single _ _)
   | n > 0 = jl
   | otherwise = Empty
-takeJ n (Append _ jl1 jl2) = case compare n (getSize s1) of
+takeJ n (Append _ jl1 jl2) = case compare n s1 of
                                   LT -> (takeJ n jl1)
                                   EQ -> jl1
-                                  GT -> jl1 +++ (takeJ (n - getSize s1) jl2)
-  where s1 = size jl1
+                                  GT -> jl1 +++ (takeJ (n - s1) jl2)
+  where s1 = getSize . size $ jl1
 
 scoreLine :: String -> JoinList Score String
 scoreLine l = Single (scoreString l) l

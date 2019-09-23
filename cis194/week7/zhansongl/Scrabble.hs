@@ -6,8 +6,6 @@ module Scrabble where
 import qualified Data.Map as Map
 import qualified Data.Char as Char
 
-import Data.Monoid
-
 newtype Score = Score Int
   deriving (Eq, Ord, Show, Num)
 
@@ -52,5 +50,5 @@ score c = Score $ Map.findWithDefault 0 (Char.toUpper c) m
                    ]
 
 scoreString :: String -> Score
-scoreString = Score . getSum . foldMap (Sum . getScore . score)
+scoreString = foldMap score
 
