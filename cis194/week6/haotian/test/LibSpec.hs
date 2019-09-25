@@ -20,3 +20,9 @@ spec = do
     it "should return correct result" $ do
       show (streamFromSeed (*2) 1) `shouldBe`
             "[1,2,4,8,16,32,64,128,256,512,1024,2048,4096,8192,16384,32768,65536,131072,262144,524288]"
+  describe "Exercises 5" $ do
+    it "nats" $ do
+      take 16 (streamToList nats) `shouldBe` [0..15]
+
+    it "ruler" $ do
+      take 16 (streamToList ruler) `shouldBe` [0, 1, 0, 2, 0, 1, 0, 3, 0, 1, 0, 2, 0, 1, 0, 4]
