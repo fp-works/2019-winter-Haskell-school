@@ -1,8 +1,4 @@
-module Homework ( toDigits
-                , toDigitsRev
-                , doubleEveryOther
-                , sumDigits
-                , validate) where
+module Homework where
 
 toDigits :: Integer -> [Integer]
 toDigits a
@@ -17,11 +13,11 @@ mapInd f l = zipWith f l [0..]
 
 doubleOrNot :: Integer -> Int -> Integer
 doubleOrNot a b
-  | b `mod` 2 == 0 = a * 2
-  | otherwise = a
+  | b `mod` 2 == 0 = a
+  | otherwise = a * 2
 
 doubleEveryOther :: [Integer] -> [Integer]
-doubleEveryOther = mapInd doubleOrNot . reverse
+doubleEveryOther = reverse . mapInd doubleOrNot . reverse
 
 sumDigits :: [Integer] -> Integer
 sumDigits = sum . concatMap toDigits

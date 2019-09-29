@@ -28,8 +28,8 @@ instance Sized m => Sized (JoinList m a) where
 indexJ :: (Sized b, Monoid b) =>
   Int -> JoinList b a -> Maybe a
 indexJ _ Empty = Nothing
-indexJ i l@(Single _ a)
-  | i == getIntSize l = Just a
+indexJ i (Single _ a)
+  | i == 0 = Just a
   | otherwise = Nothing
 indexJ i (Append _ a b)
   | i < sizeA = indexJ i a

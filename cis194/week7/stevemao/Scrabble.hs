@@ -38,24 +38,27 @@ instance Buffer (JoinList (Score, Size) String) where
   toString (Single _ a) = a
   toString (Append _ a b) = toString a <> "\n" <> toString b
   
-  fromString = foldr (+++) Empty . fmap (\(si, l) -> Single (scoreString l, Size si) l) . zip [0..] . lines
+  fromString = foldr (+++) Empty . fmap (\l -> Single (scoreString l, Size 1) l) . lines
   
   line = indexJ
   
   replaceLine _ _ Empty = Empty
-  replaceLine i s (Single (sc, si) _)
-    | i == getIntSize si = Single (sc, si) s
-    | otherwise = Empty
-  replaceLine i s (Append (_, si) a b)
-    | i < getIntSize si = replaceLine i s a
-    | otherwise = replaceLine i s b
+  replaceLine i s l@(Single (_, si) _)
+    | i == 0 = Single (scoreString s, si) s
+    | otherwise = l
+  replaceLine i s (Append _ a b)
+    | i < sizeA = replaceLine i s a +++ b
+    | otherwise = a +++ replaceLine (i - sizeA) s b
+    where sizeA = getIntSize a
 
   numLines Empty = 0
   numLines (Single (_, si) _) = getIntSize si
   numLines (Append (_, si) _ _) = getIntSize si
   
-  value = getScore . scoreString . toString
-  
+  value Empty = 0
+  value (Single (sc, _) _) = getScore sc
+  value (Append (sc, _) _ _) = getScore sc
+
 jl :: JoinList (Score, Size) String
 jl = fromString . unlines $
          [ "This buffer is for notes you don't want to save, and for"
