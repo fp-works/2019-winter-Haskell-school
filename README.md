@@ -10,7 +10,7 @@ Each class has average length of 2 hours. Each week, we will pick a time and pla
 
 
 
-## Class Materials
+## Class materials
 
 
 
