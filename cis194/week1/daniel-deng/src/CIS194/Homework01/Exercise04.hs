@@ -6,9 +6,6 @@ import CIS194.Homework01.Exercise03 (sumDigits)
 
 type CreditCardNumber = Integer
 
-(&&&) :: (a -> Bool) -> (a -> Bool) -> (a -> Bool)
-(f &&& g) a = f a && g a
-
 hasSixteenDigits :: CreditCardNumber -> Bool
 hasSixteenDigits = (16 == ) . length . toDigits
 
@@ -35,4 +32,4 @@ sumDigitsDivisibleByTen :: CreditCardNumber -> Bool
 sumDigitsDivisibleByTen = isDivisibleBy 10 . sumDigits . doubleEveryOther . toDigits
 
 validate :: CreditCardNumber -> Bool
-validate = hasSixteenDigits &&& sumDigitsDivisibleByTen
+validate = (&&) <$> hasSixteenDigits <*> sumDigitsDivisibleByTen

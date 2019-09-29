@@ -1,9 +1,13 @@
+{-# OPTIONS_GHC -fno-warn-type-defaults #-}
+
 module CIS194.Homework01.Exercise01 (toDigits, toDigitsRev) where
 
 toDigits :: Integer -> [Integer]
-toDigits num
-  | 0 >= num  = []
-  | otherwise = toDigits (num `div` 10) ++ [num `mod` 10]
+toDigits = reverse . toDigitsRev
 
 toDigitsRev :: Integer -> [Integer]
-toDigitsRev = reverse . toDigits
+toDigitsRev n = getDigit <$> [0 .. digitCount - 1]
+              where
+                num        = abs n
+                digitCount = max 1 . ceiling . logBase 10 . fromIntegral $ num
+                getDigit   = (`mod` 10) . (num `div`) . (10 ^)

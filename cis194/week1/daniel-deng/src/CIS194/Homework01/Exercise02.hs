@@ -1,9 +1,9 @@
 module CIS194.Homework01.Exercise02 (doubleEveryOther) where
 
-doubleEveryOtherFromLeft :: [Integer] -> [Integer]
-doubleEveryOtherFromLeft []                      = []
-doubleEveryOtherFromLeft [element]               = [element]
-doubleEveryOtherFromLeft (first : second : rest) = [first, second * 2] ++ doubleEveryOtherFromLeft rest
+import Data.Bool
 
 doubleEveryOther :: [Integer] -> [Integer]
-doubleEveryOther = reverse . doubleEveryOtherFromLeft . reverse
+doubleEveryOther = snd . foldr f (0 :: Integer, [] :: [Integer])
+                 where
+                   f x (cnt, xs) = (cnt + 1, newVal x cnt : xs)
+                   newVal x      = bool x (x * 2) . odd
