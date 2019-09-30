@@ -1,4 +1,5 @@
 {-# OPTIONS_GHC -Wall #-}
+{-# LANGUAGE FlexibleInstances #-}
 module Fibonacci where
 
 fib :: Integer -> Integer
@@ -30,11 +31,10 @@ streamMap :: (a -> b) -> Stream a -> Stream b
 streamMap f (Cons a s) = Cons (f a) . streamMap f $ s
 
 streamFromSeed :: (a -> a) -> a -> Stream a
-streamFromSeed f a = Cons val . streamFromSeed f $ val
-  where val = f a
+streamFromSeed f a = Cons a . streamFromSeed f . f $ a
 
 nats :: Stream Integer
-nats = streamFromSeed (+ 1) (-1)
+nats = streamFromSeed (+ 1) 0
 
 interleaveStreams :: Stream a -> Stream a -> Stream a
 interleaveStreams (Cons a as) bs = Cons a . interleaveStreams bs $ as
@@ -44,6 +44,25 @@ generateRuler a = interleaveStreams (streamRepeat a) . generateRuler $ a + 1
 
 ruler :: Stream Integer
 ruler = generateRuler 0
+
+x :: Stream Integer
+x = Cons 0 . Cons 1 . streamRepeat $ 0
+
+-- using fromInteger and then (*) is too slow
+intMulStream :: Integer -> Stream Integer -> Stream Integer
+intMulStream i = streamMap (* i)
+
+instance Num (Stream Integer) where
+  fromInteger n = Cons n . streamRepeat $ 0
+  negate = streamMap negate
+  (Cons n1 s1) + (Cons n2 s2) = Cons (n1 + n2) $ s1 + s2
+  (Cons n1 s1) * s@(Cons n2 s2) = Cons (n1 * n2) $ intMulStream n1 s2 + s1 * s
+  
+instance Fractional (Stream Integer) where
+  si1@(Cons n1 s1) / si2@(Cons n2 s2) = Cons (div n1 n2) . intMulStream (div 1 n2) $ s1 - si1 / si2 * s2
+
+fibs3 :: Stream Integer
+fibs3 = x / (1 - x - x ^ 2)
 
 data Matrix = Matrix ((Integer, Integer), (Integer, Integer))
 
