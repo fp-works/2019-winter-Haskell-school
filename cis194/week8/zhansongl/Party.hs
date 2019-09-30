@@ -5,6 +5,7 @@ module Party where
 
 import Employee
 import Data.Tree (Tree, rootLabel, subForest)
+import Data.Foldable (fold)
 
 glCons :: Employee -> GuestList -> GuestList
 glCons e (GL l f) = GL (e:l) (f + empFun e)
@@ -19,19 +20,17 @@ getFun :: GuestList -> Fun
 getFun (GL _ f) = f
 
 moreFun :: GuestList -> GuestList -> GuestList
-moreFun gl1 gl2 = case compare (getFun gl1) (getFun gl2) of
-                    GT -> gl1
-                    _  -> gl2
+moreFun = max
 
 treeFold :: (a -> [b] -> b) -> Tree a -> b
-treeFold f tree = f root . map (treeFold f) $ forest
+treeFold f tree = f root . fmap (treeFold f) $ forest
   where root = rootLabel tree
         forest = subForest tree
 
 nextLevel :: Employee -> [(GuestList, GuestList)] -> (GuestList, GuestList)
 nextLevel boss prev = (withBoss, withoutBoss)
-  where withBoss = glCons boss . foldMap id . map snd $ prev
-        withoutBoss = foldMap id . map (uncurry moreFun) $ prev
+  where withBoss = glCons boss . fold . fmap snd $ prev
+        withoutBoss = fold . fmap (uncurry moreFun) $ prev
 
 maxFun :: Tree Employee -> GuestList
 maxFun = uncurry moreFun . treeFold nextLevel

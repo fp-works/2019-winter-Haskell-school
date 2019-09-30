@@ -12,4 +12,4 @@ main = do
   let company = read companyStr :: Tree Employee
   let gl = maxFun company
   putStrLn $ "Total fun: " ++ (show . getFun $ gl)
-  putStrLn . unlines . sort . map empName . getInvitees $ gl
+  putStrLn . unlines . sort . fmap empName . getInvitees $ gl
