@@ -10,6 +10,9 @@ newtype Score =
   Score Int
   deriving (Num, Eq, Show, Ord)
 
+getScore :: Score -> Int
+getScore (Score x) = x
+
 instance Semigroup Score where
   (<>) = (+)
 
