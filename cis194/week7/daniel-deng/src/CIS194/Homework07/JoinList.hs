@@ -1,4 +1,4 @@
-module CIS194.Homework07.JoinList ( JoinList(..) ) where
+module CIS194.Homework07.JoinList ( JoinList(..), tag ) where
 
 import CIS194.Homework07.Sized ( Sized(..) )
 

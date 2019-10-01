@@ -50,8 +50,11 @@ spec_indexJ = do
       indexJ 0 jl0 `shouldBe` Nothing
     it "returns the only element for a `Single` JoinList" $
       indexJ 0 jl1 `shouldBe` Just 'a'
-    it "returns the first element for an `Append` JoinList" $
-      indexJ 0 jl12 `shouldBe` Just 'a'
+    it "returns the first element for an `Append` JoinList" $ do
+      indexJ 0 jl1234 `shouldBe` Just 'a'
+      indexJ 1 jl1234 `shouldBe` Just 'b'
+      indexJ 2 jl1234 `shouldBe` Just 'c'
+      indexJ 3 jl1234 `shouldBe` Just 'd'
 
   context "with a positive index n" $ do
     it "returns `Nothing` for an `Empty` JoinList" $
