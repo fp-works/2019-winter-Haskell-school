@@ -28,6 +28,26 @@ fn2 a
 fun2' :: Integer -> Integer
 fun2' = sum . filter even . takeWhile (> 1) . iterate fn2
 
+data Tree a = Leaf
+  | Node Integer (Tree a) a (Tree a)
+  deriving (Show, Eq)
+  
+getHeight :: Tree a -> Integer
+getHeight Leaf = -1
+getHeight (Node height _ _ _) = height
+
+insertTree :: a -> Tree a -> Tree a
+insertTree a Leaf = Node 0 Leaf a Leaf
+insertTree a (Node height left b right) 
+  | getHeight left < getHeight right = Node height left' b right 
+  | otherwise = Node height' left b right'
+      where height' = getHeight right' + 1
+            left' = insertTree a left
+            right' = insertTree a right
+
+foldTree :: [a] -> Tree a
+foldTree = foldr insertTree Leaf
+
 xor :: [Bool] -> Bool
 xor = foldr (/=) False
 
