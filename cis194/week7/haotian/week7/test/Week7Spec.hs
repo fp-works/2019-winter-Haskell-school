@@ -17,3 +17,7 @@ spec = do
           indexJ' 0 l3 `shouldBe` jlToList l3 !!? 0
           indexJ' 1 l3 `shouldBe` jlToList l3 !!? 1
           indexJ' 2 l3 `shouldBe` jlToList l3 !!? 2
+
+        it "should drop n" $ do
+          jlToList (dropJ 1 l3) `shouldBe` drop 1 (jlToList l3) 
+

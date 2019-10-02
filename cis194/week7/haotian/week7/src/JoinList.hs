@@ -50,6 +50,19 @@ indexJ' index (Append m l1 l2)
   | index < sizeM m   = indexJ' (index - sizeL l1) l2
   | otherwise = Nothing
   where 
-    sizeM  = getSize . size
+    sizeM = getSize . size
     sizeL = getSize . size . tag 
 
+--task 2
+dropJ :: (Sized b, Monoid b) => Int -> JoinList b a -> JoinList b a
+dropJ n l1@(Single _ _)
+  | n <= 0 = l1
+dropJ n l@(Append m l1 l2)
+  | n >= sizeM m = Empty
+  | n >= sizeL l1 = dropJ (n - sizeL l1) l2
+  | n > 0 = dropJ n l1 +++ l2
+  | otherwise  = l
+  where 
+    sizeM = getSize . size
+    sizeL = getSize . size . tag 
+dropJ _ _ = Empty
