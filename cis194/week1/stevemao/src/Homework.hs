@@ -1,3 +1,4 @@
+{-# OPTIONS_GHC -Wall #-}
 module Homework where
 
 toDigits :: Integer -> [Integer]

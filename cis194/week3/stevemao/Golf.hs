@@ -1,8 +1,11 @@
+{-# OPTIONS_GHC -Wall #-}
 module Golf where
 import Data.List.HT
+import Data.Foldable (fold)
 
 skips :: [a] -> [[a]]
-skips list = fmap (\(item, index) -> tail . sieve index $ (head list : list)) . zip list $ [1..]
+skips [] = []
+skips list@(x : _) = fmap (\(_, index) -> drop 1 . sieve index $ (x : list)) . zip list $ [1..]
 
 getSecondIfMax :: (Integer, Integer, Integer) -> [Integer] -> [Integer]
 getSecondIfMax (a, b, c) list
@@ -12,14 +15,13 @@ getSecondIfMax (a, b, c) list
 localMaxima :: [Integer] -> [Integer]
 localMaxima list = foldr getSecondIfMax [] $ zip3 list (drop 1 list) (drop 2 list)
 
-exercise1 = do
-  print $ skips "ABCD" == ["ABCD", "BD", "C", "D"]
-  print $ skips "hello!" == ["hello!", "el!", "l!", "l", "o", "!"]
-  print $ skips [1] == [[1]]
-  print $ skips [True,False] == [[True,False], [False]]
-  print $ skips ([] :: [Int]) == []
+numPerLine :: [Integer] -> [Int]
+numPerLine list = fmap (\n -> length . filter (== n) $ list) [0..9]
 
-exercise2 = do
-  print $ localMaxima [2,9,5,6,1] == [9,6]
-  print $ localMaxima [2,3,4,1,5] == [4]
-  print $ localMaxima [1,2,3,4,5] == []
+printLine :: [Int] -> Int  -> String
+printLine list n = fmap (\a -> if a > n then '*' else ' ') list ++ "\n"
+
+histogram :: [Integer] -> String
+histogram list = (fold . fmap (printLine npl) $ [maxNpl, maxNpl - 1..0]) ++ "==========\n0123456789\n"
+  where npl = numPerLine list
+        maxNpl = maximum npl - 1
