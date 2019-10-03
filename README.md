@@ -49,7 +49,7 @@ You can submit your assignment to this path `cis194/week1/Yourname`, replace You
 
 
 ## Setup local development environment
-- [install stack](https://docs.haskellstack.org/en/stable/README/)
+- [Install stack](https://docs.haskellstack.org/en/stable/README/)
 - `stack new <PACKAGE_NAME> <TEMPLATE_NAME>`
 - Then you have the following choices:
   - Use GHCi. This is invoked via `stack ghci` under your project root.
