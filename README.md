@@ -34,7 +34,7 @@ You shouldn’t skip the assignments, and remember:
 > If you don't do your homework and expect to be a Haskell programmer in the end of this course just by coming to/reading the lecture, you are kidding yourself. &mdash;Shine Li
 
 
-> Why is Zehua so good even though he jigs classes all the time? Because he does his homework. &mdash;Shine Li
+> Why is Zehua so good even though he jigs classes all the time? **Because he does his homework.** &mdash;Shine Li
 
 
 You can also raise any questions or issues when you are learning Haskell and raise it to [here](https://github.com/fp-works/2019-winter-Haskell-school/issues).
@@ -55,8 +55,8 @@ You can submit your assignment to this path `cis194/week1/Yourname`, replace You
   - Use GHCi. This is invoked via `stack ghci` under your project root.
     - Every time you change your code, you can use `:r` to reload your ghci session with latest code. It will show error if your code does not compile.
   - Use GHCid
-    - install GHCid by running `stack install ghcid` under your project
-    - run `ghcid --command "stack ghci --ghci-options=-fobject-code"`
+    - Install GHCid by running `stack install ghcid` under your project
+    - Run `ghcid --command "stack ghci --ghci-options=-fobject-code"`
     - The above command will lunach a `stack ghci` session with type checking and automatically re-check your code when it changes. It will print out errors when you code does not compile.
   - IDE extension
     - VSCode
