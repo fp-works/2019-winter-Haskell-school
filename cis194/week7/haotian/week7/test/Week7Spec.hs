@@ -21,3 +21,5 @@ spec = do
         it "should drop n" $ do
           jlToList (dropJ 1 l3) `shouldBe` drop 1 (jlToList l3) 
 
+        it "should take n" $ do
+          jlToList (takeJ 1 l3) `shouldBe` take 1 (jlToList l3) 

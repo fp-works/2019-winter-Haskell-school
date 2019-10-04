@@ -36,6 +36,7 @@ jlToList Empty = []
 jlToList (Single _ a) = [a]
 jlToList (Append _ l1 l2) = jlToList l1 ++ jlToList l2
 
+
 -- implement indexJ functions
 indexJ :: (Sized b, Monoid b) => Int -> JoinList b a -> Maybe a
 indexJ i jl = jlToList jl !!? i
@@ -46,12 +47,12 @@ indexJ' index (Single _ a)
   | index == 0 = Just a
   | otherwise  = Nothing
 indexJ' index (Append m l1 l2) 
-  | index < sizeL l1  = indexJ' index l1
-  | index < sizeM m   = indexJ' (index - sizeL l1) l2
+  | index < sizeL  = indexJ' index l1
+  | index < sizeM m   = indexJ' (index - sizeL) l2
   | otherwise = Nothing
   where 
     sizeM = getSize . size
-    sizeL = getSize . size . tag 
+    sizeL = sizeM . tag $ l1 
 
 --task 2
 dropJ :: (Sized b, Monoid b) => Int -> JoinList b a -> JoinList b a
@@ -59,10 +60,24 @@ dropJ n l1@(Single _ _)
   | n <= 0 = l1
 dropJ n l@(Append m l1 l2)
   | n >= sizeM m = Empty
-  | n >= sizeL l1 = dropJ (n - sizeL l1) l2
+  | n >= sizeL = dropJ (n - sizeL) l2
   | n > 0 = dropJ n l1 +++ l2
   | otherwise  = l
   where 
     sizeM = getSize . size
-    sizeL = getSize . size . tag 
+    sizeL = sizeM . tag $ l1 
 dropJ _ _ = Empty
+
+--task 2 takeJ
+takeJ :: (Sized b, Monoid b) => Int -> JoinList b a -> JoinList b a
+takeJ n l1@(Single _ _)
+  | n > 0 = l1
+takeJ n l@(Append m l1 l2)
+  | n >= sizeM m = l
+  | n >= sizeL = l1 +++ takeJ (n - sizeL) l2
+  | n > 0 = takeJ n l1
+  where
+    sizeM = getSize . size
+    sizeL = sizeM . tag $ l1 
+takeJ _ _ = Empty
+
