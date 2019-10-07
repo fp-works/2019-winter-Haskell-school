@@ -38,13 +38,11 @@ hanoi n a b c
   = hanoi (n - 1) a c b 
   ++ [(a, b)]
   ++ hanoi (n - 1) c b a
-  
+
 hanoi4 :: Integer -> Peg -> Peg -> Peg -> Peg -> [Move]
-hanoi4 0 _ _ _ _
-  = []
-hanoi4 1 a b _ _
-  = [(a, b)]
-hanoi4 n a b c d
-  = hanoi4 (n - 2) a c d b  
-  ++ [(a, d), (a, b), (d, b)]
-  ++ hanoi4 (n - 2) c b a d 
+hanoi4 0 _ _ _ _ = []
+-- https://en.wikipedia.org/wiki/Tower_of_Hanoi#With_four_pegs_and_beyond
+-- Frame–Stewart algorithm
+hanoi4 n a b c d = (hanoi4 k a c b d) ++ (hanoi (n - k) a b d) ++ (hanoi4 k c b a d)
+  where k = n - round (sqrt double) + 1
+        double = (fromInteger $ 2 * n + 1) :: Double
