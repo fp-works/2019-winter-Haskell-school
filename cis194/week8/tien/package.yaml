@@ -23,6 +23,7 @@ dependencies:
 - base >= 4.7 && < 5
 - hspec
 - containers
+- directory
 
 library:
   source-dirs: src
