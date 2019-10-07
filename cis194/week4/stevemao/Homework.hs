@@ -53,3 +53,19 @@ xor = foldr (/=) False
 
 map' :: (a -> b) -> [a] -> [b]
 map' f xs = foldr (\curr acc -> [f curr] ++ acc) [] xs
+
+myFoldl :: (a -> b -> a) -> a -> [b] -> a
+myFoldl f base xs = foldr (\x g base' -> g . f base' $ x) id xs base
+
+doubledIncrementedByOne :: Integer -> Integer
+doubledIncrementedByOne n = 2 * n + 1
+
+sieveSundaram :: Integer -> [Integer]
+sieveSundaram n = removeItems factor . fmap (uncurry (*)) . cartProd factor $ factor
+  where factor = fmap doubledIncrementedByOne [1..n]
+
+removeItems :: [Integer] -> [Integer] -> [Integer]
+removeItems ori removeList = filter (\i -> not . elem i $ removeList) ori
+
+cartProd :: [a] -> [b] -> [(a, b)]
+cartProd xs ys = [(x,y) | x <- xs, y <- ys]

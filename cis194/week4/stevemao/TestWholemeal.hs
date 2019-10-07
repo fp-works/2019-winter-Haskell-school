@@ -31,10 +31,18 @@ main = hspec $ do
       forAll (arbitrary :: Gen [Integer])
         (\xs -> map' (+2) xs `shouldBe` map (+2) xs)
 
-  describe "map'" $ do
-    it "should behave exactly like map" $ property $
-      forAll (arbitrary :: Gen [Integer])
-        (\xs -> map' (+2) xs `shouldBe` map (+2) xs)
+  describe "myFoldl" $ do
+    it "should behave exactly like foldl" $ property $
+      forAll (arbitrary :: Gen [String])
+        (\xs -> myFoldl (++) "__" xs `shouldBe` foldl (++) "__" xs)
+
+  describe "sieveSundaram" $ do
+    it "should return the correct prime numbers" $ do
+      sieveSundaram 10 `shouldBe` [3, 5, 7, 11, 13, 17, 19]
+      sieveSundaram 40 `shouldBe` [3, 5, 7, 11, 13, 17, 19,
+                                   23, 29, 31, 37, 41, 43,
+                                   47, 53, 59, 61, 67, 71,
+                                   73, 79]
 
 balanced :: Tree a -> Bool
 balanced Leaf = True
