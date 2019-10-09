@@ -2,28 +2,18 @@
 
 module CreditCards where
 
-toDigitsRev :: Integer -> [Integer]
-toDigitsRev n
-  | n >= 0 = digit n
-  | otherwise = []
-  where digit 0 = []
-        digit n' = n' `rem` 10 : digit (n' `div` 10)
-
 toDigits :: Integer -> [Integer]
-toDigits = reverse . toDigitsRev
-
-doubleEveryOtherRev :: [Integer] -> [Integer]
-doubleEveryOtherRev [] = []
-doubleEveryOtherRev [x] = [x]
-doubleEveryOtherRev (x : y : xs) = (x : 2 * y : doubleEveryOtherRev xs)
+toDigits = fmap (`rem` 10) . takeWhile (>0) . iterate (`div` 10)
 
 doubleEveryOther :: [Integer] -> [Integer]
-doubleEveryOther = reverse . doubleEveryOtherRev . reverse
+doubleEveryOther [] = []
+doubleEveryOther [x] = [x]
+doubleEveryOther (x : y : xs) = (x : 2 * y : doubleEveryOther xs)
 
 sumDigits :: [Integer] -> Integer
-sumDigits xs = sum . flatten $ map toDigits xs
+sumDigits = sum . flatten . fmap toDigits
   where flatten = foldr (++) []
 
 validate :: Integer -> Bool
-validate n = ((sumDigits . doubleEveryOther $ toDigits n) `rem` 10) == 0
+validate n = ((sumDigits . doubleEveryOther . toDigits $ n) `rem` 10) == 0
 
