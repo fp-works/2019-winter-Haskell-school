@@ -76,3 +76,12 @@ invade b@(Battlefield _ 0) = pure b
 invade b@(Battlefield a _)
   | a < 2 = pure b
   | otherwise = battle b >>= invade
+
+calculateResult :: Double -> Double -> Rand StdGen Double
+calculateResult 1000 attackersWins = pure (attackersWins / 1000)
+calculateResult n attackersWins = invade (Battlefield 6 6) >>= f
+  where f (Battlefield _ 0) = calculateResult (n + 1) (attackersWins + 1)
+        f _ = calculateResult (n + 1) attackersWins
+
+successProb :: Battlefield -> Rand StdGen Double
+successProb b = calculateResult 0 0
