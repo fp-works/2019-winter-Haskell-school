@@ -3,6 +3,7 @@
 module Risk where
 
 import Control.Monad.Random
+import Data.List
 
 ------------------------------------------------------------
 -- Die values
@@ -26,3 +27,46 @@ die = getRandom
 type Army = Int
 
 data Battlefield = Battlefield { attackers :: Army, defenders :: Army }
+
+threeDies :: Rand StdGen [DieValue]
+threeDies =
+  die >>= \d1 ->
+  die >>= \d2 ->
+  die >>= \d3 ->
+  return . reverse . sort $ [d1,d2,d3]
+
+twoDies :: Rand StdGen [DieValue]
+twoDies =
+  die >>= \d1 ->
+  die >>= \d2 ->
+  return . reverse . sort $ [d1,d2]
+  
+oneDie :: Rand StdGen [DieValue]
+oneDie = 
+  die >>= \d ->
+  return [d]
+
+dieMany :: Int -> Rand StdGen [DieValue]
+dieMany 1 = oneDie
+dieMany 2 = twoDies
+dieMany _ = threeDies
+
+compareTwoLists :: [DieValue] -> [DieValue] -> [Bool]
+compareTwoLists (a : as) (d : ds) = (a > d) : compareTwoLists as ds
+compareTwoLists [] _ = []
+compareTwoLists _ [] = []
+
+count   :: Eq a => a -> [a] -> Int
+count x =  length . filter (==x)
+
+battle :: Battlefield -> Rand StdGen Battlefield
+battle (Battlefield a d) = do 
+  let maxA = min (a - 1) 3
+  let maxD = min d 2
+
+  attacks <- dieMany maxA
+  defends <- dieMany maxD
+
+  let results = compareTwoLists attacks defends
+
+  return . Battlefield (a - count True results) $ d - count False results
