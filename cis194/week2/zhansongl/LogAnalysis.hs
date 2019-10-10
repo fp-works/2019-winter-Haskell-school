@@ -2,8 +2,6 @@
 
 module LogAnalysis where
 
-import Prelude hiding(log)
-
 import Log
 
 import Text.Megaparsec hiding (parse)
@@ -36,30 +34,27 @@ parseMessage s = case (runParser messageParser "" s) of
                       Right m -> m
 
 parse :: String -> [LogMessage]
-parse = (map parseMessage) . lines
+parse = (fmap parseMessage) . lines
 
 insert :: LogMessage -> MessageTree -> MessageTree
 insert (Unknown _) tree = tree
-insert log@(LogMessage _ t _) tree =
-  case tree of
-       Leaf -> Node Leaf log Leaf
-       (Node left log'@(LogMessage _ t' _) right) ->
-         if t < t'
-         then (Node (insert log left) log' right)
-         else (Node left log' (insert log right))
-       _ -> undefined
+insert l Leaf = Node Leaf l Leaf
+insert _ l'@(Node _ (Unknown _) _) = l' -- l' is malformed, nothing we can do here
+insert l@(LogMessage _ t _) (Node left l'@(LogMessage _ t' _) right) =
+  case compare t t' of
+    LT -> Node (insert l left) l' right
+    _  -> Node left l' (insert l right)
 
 build :: [LogMessage] -> MessageTree
 build = foldr insert Leaf
 
 inOrder :: MessageTree -> [LogMessage]
 inOrder Leaf = []
-inOrder (Node left log right) = (inOrder left) ++ (log : (inOrder right))
+inOrder (Node left l right) = (inOrder left) ++ (l : (inOrder right))
 
 whatWentWrong :: [LogMessage] -> [String]
-whatWentWrong logs = map getMessage $ filter isRelevant sortedLogs
-  where sortedLogs = inOrder (build logs)
-        isRelevant (LogMessage (Error ec) _ _) = ec >= 50
+whatWentWrong = fmap getMessage . filter isRelevant . inOrder . build
+  where isRelevant (LogMessage (Error ec) _ _) = ec >= 50
         isRelevant _ = False
         getMessage (LogMessage _ _ s) = s
         getMessage (Unknown s) = s

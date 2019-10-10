@@ -44,11 +44,11 @@ main = hspec $ do
     it "builds an empty tree with no log messages" $ do
       build [] `shouldBe` Leaf
     it "builds a correct search tree" $ property $
-      propCorrectTree
+      forAll genLogs (\xs -> validSearchTree $ build xs)
 
   describe "inOrder" $ do
     it "returns a sorted list of message logs" $ property $
-      propCorrectInOrder
+      forAll genLogs (\xs -> sortedLogs (inOrder $ build xs))
 
   describe "whatWentWrong" $ do
     it "returns relevant errors" $ do
@@ -70,17 +70,11 @@ sampleLogs = ["I 6 Completed armadillo processing",
 relevantSampleLogs :: [String]
 relevantSampleLogs = [ "Way too many pickles", "Bad pickle-flange interaction detected", "Flange failed!"]
 
-propCorrectInOrder :: Property
-propCorrectInOrder = forAll genLogs (\xs -> sortedLogs (inOrder $ build xs))
-
 sortedLogs :: [LogMessage] -> Bool
 sortedLogs [] = True
 sortedLogs [_] = True
 sortedLogs (LogMessage _ t1 _ : LogMessage _ t2 _ : ls) =
   (t1 <= t2) && (sortedLogs ls)
-
-propCorrectTree :: Property
-propCorrectTree = forAll genLogs (\xs -> validSearchTree $ build xs)
 
 genLogs :: Gen [LogMessage]
 genLogs = do
