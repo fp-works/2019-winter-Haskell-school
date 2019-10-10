@@ -3,6 +3,7 @@
 
 module Party where
 
+import Data.Foldable
 import Data.List
 import Data.Tree
 import Employee
@@ -32,8 +33,8 @@ treeFold f (Node l s) = f l $ treeFold f <$> s
 nextLevel :: Employee -> [(GuestList, GuestList)] -> (GuestList, GuestList)
 nextLevel emp gls = (gl1, gl2)
   where
-    gl1 = glCons emp $ foldr (<>) mempty $ snd <$> gls
-    gl2 = foldr (<>) mempty $ moreFun <$> fst <*> snd <$> gls
+    gl1 = glCons emp . fold . fmap snd $ gls
+    gl2 = fold $ moreFun <$> fst <*> snd <$> gls
 
 -- exercie 4 --
 maxFun :: Tree Employee -> GuestList
