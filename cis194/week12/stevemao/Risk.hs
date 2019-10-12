@@ -33,11 +33,6 @@ data Battlefield = Battlefield { attackers :: Army, defenders :: Army }
 dieMany :: Int -> Rand StdGen [DieValue]
 dieMany n = fmap (reverse . sort) . replicateM n $ die
 
-compareTwoLists :: [DieValue] -> [DieValue] -> [Bool]
-compareTwoLists (a : as) (d : ds) = (a > d) : compareTwoLists as ds
-compareTwoLists [] _ = []
-compareTwoLists _ [] = []
-
 count   :: Eq a => a -> [a] -> Int
 count x =  length . filter (==x)
 
@@ -49,7 +44,7 @@ battle (Battlefield a d) = do
   attacks <- dieMany maxA
   defends <- dieMany maxD
 
-  let results = compareTwoLists attacks defends
+  let results = zipWith (>) attacks defends
 
   return . Battlefield (a - count False results) $ d - count True results
 
@@ -60,7 +55,8 @@ invade b@(Battlefield a _)
   | otherwise = battle b >>= invade
 
 successProb :: Battlefield -> Rand StdGen Double
-successProb b = fmap (\bs -> (foldr f 0 bs) / 1000) . replicateM 1000 . invade $ b
+successProb b = fmap (\bs -> (foldr f 0 bs) / simCount) . replicateM simCount . invade $ b
   where f :: Battlefield -> Double -> Double
         f (Battlefield _ 0) acc = acc + 1
         f _ acc = acc
+        simCount = 1000
