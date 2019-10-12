@@ -59,11 +59,8 @@ invade b@(Battlefield a _)
   | a < 2 = pure b
   | otherwise = battle b >>= invade
 
--- TODO: make the simulator run in parallel
 successProb :: Battlefield -> Rand StdGen Double
-successProb b = calculateResult 0 0
-  where calculateResult :: Double -> Double -> Rand StdGen Double
-        calculateResult 1000 attackersWins = pure (attackersWins / 1000)
-        calculateResult n attackersWins = invade b >>= f
-          where f (Battlefield _ 0) = calculateResult (n + 1) (attackersWins + 1)
-                f _ = calculateResult (n + 1) attackersWins
+successProb b = fmap (\bs -> (foldr f 0 bs) / 1000) . replicateM 1000 . invade $ b
+  where f :: Battlefield -> Double -> Double
+        f (Battlefield _ 0) acc = acc + 1
+        f _ acc = acc
