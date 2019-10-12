@@ -55,8 +55,8 @@ invade b@(Battlefield a _)
   | otherwise = battle b >>= invade
 
 successProb :: Battlefield -> Rand StdGen Double
-successProb b = fmap (\bs -> (foldr f 0 bs) / simCount) . replicateM simCount . invade $ b
+successProb b = fmap (\bs -> (foldr f 0 bs) / fromIntegral simCount) . replicateM simCount . invade $ b
   where f :: Battlefield -> Double -> Double
         f (Battlefield _ 0) acc = acc + 1
         f _ acc = acc
-        simCount = 1000
+        simCount = 1000 :: Int
