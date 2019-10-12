@@ -36,17 +36,20 @@ dieMany n = fmap (reverse . sort) . replicateM n $ die
 count   :: Eq a => a -> [a] -> Int
 count x =  length . filter (==x)
 
-battle :: Battlefield -> Rand StdGen Battlefield
-battle (Battlefield a d) = do 
+battle' :: Monad m => (Int -> m [DieValue]) -> Battlefield -> m Battlefield
+battle' m (Battlefield a d) = do 
   let maxA = min (a - 1) 3
   let maxD = min d 2
 
-  attacks <- dieMany maxA
-  defends <- dieMany maxD
+  attacks <- m maxA
+  defends <- m maxD
 
   let results = zipWith (>) attacks defends
 
   return . Battlefield (a - count False results) $ d - count True results
+  
+battle :: Battlefield -> Rand StdGen Battlefield
+battle = battle' dieMany
 
 invade :: Battlefield -> Rand StdGen Battlefield
 invade b@(Battlefield _ 0) = pure b
