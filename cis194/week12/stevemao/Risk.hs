@@ -51,7 +51,7 @@ battle (Battlefield a d) = do
 
   let results = compareTwoLists attacks defends
 
-  return . Battlefield (a - count True results) $ d - count False results
+  return . Battlefield (a - count False results) $ d - count True results
 
 invade :: Battlefield -> Rand StdGen Battlefield
 invade b@(Battlefield _ 0) = pure b
