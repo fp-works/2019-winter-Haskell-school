@@ -2,12 +2,15 @@
 
 module Golf where
 
+import Data.Bool (bool)
+import Data.List (transpose, sort, group)
+-- base-unicode-symbols
+import Data.List.Unicode ((∈))
+
 -- need utility-ht
 import Data.List.HT (sieve, tails)
 -- need split
 import Data.List.Split (divvy)
-import Data.Map (empty, insert, adjust, (!?))
-import Data.Bool (bool)
 -- need safe
 import Safe (initSafe, atDef)
 
@@ -42,19 +45,26 @@ localMaxima :: [Integer] -> [Integer]
 localMaxima = map (\x -> atDef 0 x 1) . filter (\[a, b, c] -> a <= b && b >= c) . divvy 3 1
 
 {-
-- Create a map that counts the number of occurrences of each digit,
-- Create `h` number of rows where `h` is the maximum number of occurrences,
-- Draw `h` lines and put star or space in based on the occurrences of the digit
--   and the line number, i.e. for the 2nd line if there are more than 2 2's in the
--   input a star should be drawn, otherwise it should be a space.
-- Put the lines together to get the histogram.
+ - *) group . sort $ [1,2,3,4,4,4,5,9] => [[1],[2],[3],[4,4,4],[5],[9]]
+ -
+ - *) and then transform this into rows of the diagram:
+ -
+ -    transpose [[1],[2],[3],[4,4,4],[5,5],[9]] => [[1,2,3,4,5,9],[4,5],[4]]
+ -
+ - *) draw each row/line:
+ -
+ -    r = [4,5]
+ -    '0123456789' => '    **    '
+ -
+ - *) stick all the lines together and add x-axis and labels
 -}
 
 histogram :: [Int] -> String
--- 189 chars
-histogram xs = (++ "==========\n0123456789\n")
-             . unlines
-             $ reverse (map (\k -> map (\n -> bool ' ' '*' (maybe (0::Int) id (p!?n) >= k)) l) [1..(maximum p)])
-  where p = foldr (adjust (+1)) (foldr (flip insert 0) empty l) xs
-        l = [0..9]
-
+-- 116 (118?) chars
+histogram = (++ "==========\n0123456789\n")
+          . unlines
+          . reverse
+          . map (\r -> map (\c -> bool ' ' '*' (c ∈ r)) [0..9])
+          . transpose
+          . group
+          . sort
