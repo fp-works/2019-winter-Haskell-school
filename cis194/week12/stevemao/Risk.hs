@@ -7,6 +7,8 @@ import Control.Monad.Random
 import Data.List
 import Data.Universe.Helpers
 import Data.Tree
+import Data.Bifunctor
+import Debug.Trace
 
 ------------------------------------------------------------
 -- Die values
@@ -14,8 +16,8 @@ import Data.Tree
 newtype DieValue = DV { unDV :: Int } 
   deriving (Eq, Ord, Show, Num, Enum)
 
-first :: (a -> b) -> (a, c) -> (b, c)
-first f (a, c) = (f a, c)
+-- first :: (a -> b) -> (a, c) -> (b, c)
+-- first f (a, c) = (f a, c)
 
 instance Random DieValue where
   random           = first DV . randomR (1,6)
@@ -35,7 +37,6 @@ data Battlefield = Battlefield { attackers :: Army, defenders :: Army }
 sortReverse :: Functor f => f [DieValue] -> f [DieValue]
 sortReverse = fmap $ reverse . sort
 
--- TODO: replicateM is wrong. Use fold bind
 dieMany :: Int -> Rand StdGen [DieValue]
 dieMany n = sortReverse . replicateM n $ die
 
@@ -49,6 +50,9 @@ diePlanned n = sortReverse . cartprod . replicate n $ [1..6]
 
 count   :: Eq a => a -> [a] -> Int
 count x =  length . filter (==x)
+
+countSnd :: Eq a => a -> [(b, a)] -> Int
+countSnd x = count x . fmap snd
 
 battle' :: Monad m => (Int -> m [DieValue]) -> Battlefield -> m Battlefield
 battle' m (Battlefield a d) = do 
@@ -65,7 +69,7 @@ battle' m (Battlefield a d) = do
 battle :: Battlefield -> Rand StdGen Battlefield
 battle = battle' dieMany
 
-battleAll :: Battlefield -> [Battlefield]
+battleAll :: Battlefield -> [(Double, Battlefield)]
 battleAll (Battlefield _ 0) = []
 battleAll (Battlefield a d)
   | a < 2 = []
@@ -79,7 +83,11 @@ battleAll (Battlefield a d)
       let allPossibilities = attackss +*+ defendss -- [([1,1,1], [1,1]), ([2,1,1], [1,1])...]
       let allResults = fmap (uncurry $ zipWith (>)) allPossibilities
 
-      fmap (\r -> Battlefield (a - count False r) $ d - count True r) allResults
+      let allResultsWithPercent = foldr (\curr acc -> if countSnd curr acc == 0 then (1, curr) : acc else fmap (\(co, cu) -> if cu == curr then (co + 1, cu) else (co, cu)) acc) [] allResults
+      let allResultsNum = fromIntegral $ length allResults
+      
+      let ret = fmap (bimap (/ allResultsNum) (\r -> Battlefield (a - count False r) $ d - count True r)) allResultsWithPercent
+      trace ("ret: " ++ show ret) ret
 
 invade :: Battlefield -> Rand StdGen Battlefield
 invade b@(Battlefield _ 0) = pure b
@@ -94,17 +102,17 @@ successProb = fmap (\bs -> foldr f 0 bs / fromIntegral simCount) . replicateM si
         f _ acc = acc
         simCount = 1000 :: Int
 
-buildTree :: Battlefield -> Tree Battlefield
-buildTree = unfoldTree f
-  where f :: Battlefield -> (Battlefield, [Battlefield])
-        f b = (b, battleAll b)
+buildTree :: Battlefield -> Tree (Double, Battlefield)
+buildTree b = unfoldTree f (1, b)
+  where f :: (Double, Battlefield) -> ((Double, Battlefield), [(Double, Battlefield)])
+        f c@(_, ba) = (c, battleAll ba)
 
-calculateProb :: Tree Battlefield -> Double
+calculateProb :: Tree (Double, Battlefield) -> Double
 calculateProb = foldTree f
-  where f :: Battlefield -> [Double] -> Double
-        f (Battlefield _ 0) [] = 1
+  where f :: (Double, Battlefield) -> [Double] -> Double
+        f (percent, Battlefield _ 0) [] = percent
         f _ [] = 0
-        f _ forest = sum forest / fromIntegral (length forest)
+        f (percent, _) forest = sum . fmap (* percent) $ forest 
 
 exactSuccessProb :: Battlefield -> Double
 exactSuccessProb = calculateProb . buildTree
