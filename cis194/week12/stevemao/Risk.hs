@@ -87,7 +87,7 @@ battleAll (Battlefield a d)
       let allResultsNum = fromIntegral $ length allResults
       
       let ret = fmap (bimap (/ allResultsNum) (\r -> Battlefield (a - count False r) $ d - count True r)) allResultsWithPercent
-      trace ("ret: " ++ show ret) ret
+      trace (show ret) ret
 
 invade :: Battlefield -> Rand StdGen Battlefield
 invade b@(Battlefield _ 0) = pure b
