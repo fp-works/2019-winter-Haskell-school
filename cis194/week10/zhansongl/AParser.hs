@@ -4,6 +4,7 @@ module AParser where
 
 import Data.Char (isDigit, isUpper)
 import Control.Applicative (Alternative(..))
+import Control.Monad (void)
 
 newtype Parser a
   = Parser { runParser :: String -> Maybe (a, String) }
@@ -39,7 +40,7 @@ instance Applicative Parser where
   (<*>) (Parser pf) (Parser pa) = Parser $ \s -> pf s >>= \(f, s') -> first f <$> pa s'
 
 abParser :: Parser (Char, Char)
-abParser = (,) <$> (char 'a') <*> (char 'b')
+abParser = (,) <$> char 'a' <*> char 'b'
 
 abParser_ :: Parser ()
 abParser_ = () <$ abParser
@@ -52,4 +53,4 @@ instance Alternative Parser where
   (<|>) (Parser a) (Parser a') = Parser $ \s -> a s <|> a' s
 
 intOrUppercase :: Parser ()
-intOrUppercase = () <$ posInt <|> () <$ satisfy isUpper
+intOrUppercase = void posInt <|> void (satisfy isUpper)
