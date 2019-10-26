@@ -5,6 +5,7 @@
 module AParser where
 
 import Control.Applicative
+import Control.Monad
 
 import Data.Char
 
@@ -69,7 +70,43 @@ instance Functor Parser where
 
 -- exercise 2 --
 instance Applicative Parser where
-  pure a = Parser (\x -> Just (a, x))
-  Parser f <*> (Parser a) = Parser b
+  pure a = Parser x
     where
-      b xs = pure first <*> fmap fst (f xs) <*> (a xs)
+      x y = Just (a, y)
+  Parser f <*> Parser a = Parser b
+    where
+      b xs =
+        case f xs of
+          Just (_, s) -> first <$> fmap fst (f xs) <*> a s
+          Nothing -> Nothing
+
+-- exercise 3 --
+-- 3.1 --
+abParser :: Parser (Char, Char)
+abParser = (,) <$> char 'a' <*> char 'b'
+
+-- 3.2 --
+abParser_ :: Parser ()
+abParser_ = void abParser
+
+-- 3.3 --
+intPair :: Parser [Integer]
+intPair = f <$> posInt <* char ' ' <*> posInt
+  where
+    f x y = x : y : []
+
+-- exercise 4 --
+instance Alternative Parser where
+  empty = Parser a
+    where
+      a _ = Nothing
+  Parser a <|> Parser b = Parser c
+    where
+      c xs =
+        case a xs of
+          Nothing -> b xs
+          Just (_, _) -> a xs
+
+-- exercise 5 --
+intOrUppercase :: Parser ()
+intOrUppercase = void $ (const ' ' <$> posInt) <|> satisfy isUpper
