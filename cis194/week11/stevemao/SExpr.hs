@@ -47,9 +47,13 @@ data SExpr = A Atom
            | Comb [SExpr]
   deriving Show
 
+between :: Applicative f => f a -> f b -> f c -> f c
+between l r p = l *> p <* r
+
 parseSExpr :: Parser SExpr
-parseSExpr = spaces *> noSpace <* spaces
-  where noSpace = toN posInt <|> toI ident <|> char '(' *> oneOrMoreSExprs <* char ')'
+parseSExpr = between spaces spaces noSpace
+  where noSpace = toN posInt <|> toI ident <|> inBrackets
+        inBrackets = between (char '(') (char ')') oneOrMoreSExprs
         oneOrMoreSExprs = toComb . oneOrMore $ parseSExpr
         toN = fmap $ A . N
         toI = fmap $ A . I
