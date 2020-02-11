@@ -1,0 +1,17 @@
+name: Week7
+version: 0.0.0
+
+ghc-options: -Wall -fprint-potential-instances
+
+dependencies:
+ - base == 4.*
+ - ilist == 0.3.*
+ - mtl
+
+library:
+  source-dirs: src
+
+tests:
+  spec:
+    defaults: hspec/hspec@master
+    dependencies: Week7

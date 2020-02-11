@@ -9,12 +9,14 @@ import Buffer
 newtype BufferString = BufferString { getString :: String }
 
 instance Buffer BufferString where
-  toString     = getString . id
-  fromString   = id . BufferString
+  toString     = getString
+  fromString   = BufferString
   line n       = safeIndex n . lines . toString
-  replaceLine n l = fromString . unlines . uncurry replaceLine' . splitAt n . lines . toString
-      where replaceLine' pre [] = pre
-            replaceLine' pre (_:ls) = pre ++ l:ls
+  replaceLine n l
+        | n < 0     = id
+        | otherwise = fromString . unlines . uncurry replaceLine' . splitAt n . lines . toString
+          where replaceLine' pre [] = pre
+                replaceLine' pre (_:ls) = pre ++ l:ls
   numLines     = length . lines . toString
   value        = length . words . toString
 
